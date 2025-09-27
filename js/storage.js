@@ -50,6 +50,16 @@ gameData.addRecord('level', 'medium', function(val){
     $('#level-select input[type="radio"]').checkboxradio('refresh');
 });
 
+gameData.addRecord('player1Character', 'zhang', function(val){
+    $('#player1-character-select input[value="'+val+'"]').attr('checked',true);
+    $('#player1-character-select input[type="radio"]').checkboxradio('refresh');
+});
+
+gameData.addRecord('player2Character', 'ziqi', function(val){
+    $('#player2-character-select input[value="'+val+'"]').attr('checked',true);
+    $('#player2-character-select input[type="radio"]').checkboxradio('refresh');
+});
+
 gameData.load=function(){
     if(!this.firstTime){
         this.ini();

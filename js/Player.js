@@ -1,15 +1,23 @@
 // Agents that represent either a player or an AI
-function Player(color){
+function Player(color, character){
     this.color = color;
+    this.character = character || CHARACTERS.zhang; // 默认角色
+    this.lastAction = null;
+    this.blocked = false;
+    this.frozen = false;
 }
 
 Player.prototype.myTurn = function(){
     this.game.setCurrentColor(this.color);
-    gameInfo.setText((function(string){
-        return string.charAt(0).toUpperCase() + string.slice(1);
-    })(this.color)+"'s turn.");
+    var colorText = this.color === 'black' ? '黑子' : '白子';
+    gameInfo.setText(colorText + '的回合');
     gameInfo.setColor(this.color);
     gameInfo.setBlinking(false);
+    
+    // 更新技能系统的当前玩家
+    if (this.game.skillsSystem) {
+        this.game.skillsSystem.setCurrentPlayer(this);
+    }
 };
 
 Player.prototype.watch = function(){};
@@ -18,8 +26,8 @@ Player.prototype.setGo = function(r,c){
     return this.game.setGo(r, c, this.color);
 };
 
-function HumanPlayer(color, game){
-    Player.call(this, color, game);
+function HumanPlayer(color, character){
+    Player.call(this, color, character);
 }
 
 HumanPlayer.prototype = new Player();
@@ -28,12 +36,12 @@ HumanPlayer.prototype.myTurn = function(){
     Player.prototype.myTurn.call(this);
     this.game.toHuman(this.color);
     if(this.other instanceof AIPlayer){
-        gameInfo.setText('Your turn');
+        gameInfo.setText('你的回合');
     }
 };
 
-function AIPlayer(mode, color, game){
-    Player.call(this, color, game);
+function AIPlayer(mode, color, character){
+    Player.call(this, color, character);
     this.computing = false;
     this.cancel = 0;
     this.mode = mode;
@@ -62,10 +70,16 @@ function AIPlayer(mode, color, game){
                 console.log(e.data);
         }
     };
+    // 将easy难度映射到novice，因为AI worker不支持easy
+    var aiMode = mode;
+    if (mode === 'easy') {
+        aiMode = 'novice';
+    }
+    
     this.worker.postMessage({
         type: 'ini',
         color: color,
-        mode: mode
+        mode: aiMode
     });
 }
 
@@ -74,7 +88,7 @@ AIPlayer.prototype = new Player();
 AIPlayer.prototype.myTurn = function(){
     Player.prototype.myTurn.call(this);
     this.game.toOthers();
-    gameInfo.setText("Thinking...");
+    gameInfo.setText("AI思考中...");
     gameInfo.setBlinking(true);
     this.move();
 };

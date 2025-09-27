@@ -64,9 +64,9 @@ Place.prototype.unwarns = function(){
 
 var Board = function(boardElm, backgroundElm){
     var frag = document.createDocumentFragment();
-    for(var i = 0; i < 14; i++){
+    for(var i = 0; i < 15; i++){
         var row = document.createElement("tr");
-        for(var j = 0; j < 14; j++){
+        for(var j = 0; j < 15; j++){
             row.appendChild(document.createElement("td"));
         }
         frag.appendChild(row);
@@ -99,7 +99,9 @@ var Board = function(boardElm, backgroundElm){
     for(var r = 0; r < 15; r++){
         places.push([]);
         for(var c = 0; c < 15; c++){
-            places[r].push(new Place(r, c, this));
+            var place = new Place(r, c, this);
+            place.elm.data('row', r).data('col', c);
+            places[r].push(place);
             frag.appendChild(places[r][c].elm[0]);
         }
     }
@@ -227,6 +229,22 @@ var Board = function(boardElm, backgroundElm){
 
     this.setWarning = function(num, shouldWarn){
         warnings[num] = !!shouldWarn;
+    };
+    
+    this.blockPosition = function(r, c){
+        // 阻挡位置，不允许落子
+        places[r][c].blocked = true;
+    };
+    
+    this.isBlocked = function(r, c){
+        return places[r][c].blocked || false;
+    };
+    
+    this.getColor = function(r, c){
+        if (places[r][c].isSet) {
+            return places[r][c].elm.hasClass('black') ? 'black' : 'white';
+        }
+        return null;
     };
 
     function updateWarning(r,c,num,dir){

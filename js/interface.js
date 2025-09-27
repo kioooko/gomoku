@@ -1,5 +1,5 @@
 $(document).ready(function(){
-    var game = new Game($(".go-board"), $(".board tbody"));
+    window.game = new Game($(".go-board"), $(".board tbody"));
 
     var adjustSize = adjustSizeGen();
 
@@ -9,45 +9,8 @@ $(document).ready(function(){
     $.mobile.defaultDialogTransition = 'flow';
     $.mobile.defaultPageTransition = 'flow';
     
-    $('#mode-select input[type="radio"]').on('change', function(){
-        gameData.mode=$(this).val();
-    });
-    
-    $('#color-select input[type="radio"]').on('change', function(){
-        gameData.color=$(this).val();
-    });
-    
-    $('#level-select input[type="radio"]').on('change', function(){
-        gameData.level=$(this).val();
-    });
-    
     $('.back-to-game').on('tap',function(){
         $.mobile.changePage('#game-page');
-    });
-    
-    $("#start-game").on('click',function(){
-        try{
-            game.white.worker.terminate();
-            game.black.worker.terminate();
-        }catch(e){}
-        if(gameData.mode==='vshuman'){
-            game.mode='hvh';
-            game.init(new HumanPlayer("black"), new HumanPlayer("white"));
-        }else{
-            var color, other;
-            if(gameData.color==='black'){
-                color='black';
-                other='white';
-            }else{
-                color='white';
-                other='black';
-            }
-            game.mode=gameData.level;
-            game.init(new HumanPlayer(color), new AIPlayer(game.mode, other));
-        }
-        $.mobile.changePage('#game-page');
-        game.start();
-        setTimeout(function(){$('.back-to-game').button('enable');},100);
     });
 
     $("#undo-button").on('tap', function(){
@@ -59,11 +22,18 @@ $(document).ready(function(){
         $.mobile.changePage('#game-won');
     });
     
-    $('#new-game').page();
+    // 初始化所有对话框
+    $('#mode-selection').page();
+    $('#character-selection').page();
+    $('#color-selection').page();
+    $('#difficulty-selection').page();
+    $('#game-confirm').page();
     $('#game-won').page();
-    gameData.load();
+    
     $('.back-to-game').button('disable');
-    $.mobile.changePage('#new-game',{changeHash: false});
+    
+    // 初始化游戏选择系统（在所有对话框初始化后）
+    var gameSelection = new GameSelection();
 
     window.gameInfo = (function(){
         var blinking = false,
@@ -117,21 +87,21 @@ $(document).ready(function(){
 function showWinDialog(game){
     gameInfo.setBlinking(false);
     if(game.mode === 'hvh'){
-        var who=(function(string){ return string.charAt(0).toUpperCase() + string.slice(1);})(game.getCurrentPlayer().color);
-        $("#game-won h4").html(who+' Won!');
-        gameInfo.value=who+' won.'
-        $("#win-content").html(who+' won the game. Play again?');
+        var who = game.getCurrentPlayer().color === 'black' ? '黑子' : '白子';
+        $("#game-won h4").html(who + '获胜！');
+        gameInfo.value = who + '获胜了';
+        $("#win-content").html(who + '赢得了游戏！再来一局吗？');
         $('#happy-outer').fadeIn(500);
     }else{
         if(game.getCurrentPlayer() instanceof HumanPlayer){
-            $("#game-won h4").html('You Won!');
-            $("#win-content").html('Great dude! You won the game. Can you do it again?');
-            gameInfo.value='You won.'
+            $("#game-won h4").html('你赢了！');
+            $("#win-content").html('太棒了！你赢得了游戏。还能再赢一次吗？');
+            gameInfo.value = '你赢了';
             $('#sad-outer').fadeIn(800);
         }else{
-            $("#game-won h4").html('You Lost.');
-            $("#win-content").html("Oh damn! We can't let AI take over. Try again?");
-            gameInfo.value='AI won.'
+            $("#game-won h4").html('你输了');
+            $("#win-content").html("哎呀！不能让AI统治世界。再试一次？");
+            gameInfo.value = 'AI赢了';
             $('#happy-outer').fadeIn(800);
         }
     }

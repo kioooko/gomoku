@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html manifest="offline.appcache">
 <head>
+	<meta charset="UTF-8">
 	<meta name="author" content="Luca Bontempi" />
-	<meta name="description" content="Gomoku online game. Play against a friend or an AI opponent. Choose between different difficulty levels"/>
+	<meta name="description" content="技能五子棋在线游戏。与朋友或AI对手对战，选择不同难度级别，体验独特的技能系统"/>
 	<meta name = "viewport" content = "user-scalable=no, initial-scale=1.0, maximum-scale=1.0, width=device-width">
 	<meta name="apple-mobile-web-app-capable" content="yes">
 	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
@@ -13,20 +14,48 @@
 
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
-	<title>Gomoku | Luca Bontempi</title>
+	<title>技能五子棋 | 策略对战游戏</title>
 
 	<link rel="stylesheet" href="https://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.css" />
 	<script src="https://code.jquery.com/jquery-1.8.2.min.js"></script>
 	<script src="https://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.js"></script>
 
 	<link rel='stylesheet' href='style/style.css' type='text/css'/>
+	<link rel='stylesheet' href='style/skills.css' type='text/css'/>
 
+	<!-- Firebase SDK -->
+	<script type="module">
+		import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+		import { getFirestore } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+		
+		// Firebase配置
+		const firebaseConfig = {
+			apiKey: "AIzaSyBvQvQvQvQvQvQvQvQvQvQvQvQvQvQvQvQ",
+			authDomain: "gomoku-game.firebaseapp.com",
+			projectId: "gomoku-game",
+			storageBucket: "gomoku-game.appspot.com",
+			messagingSenderId: "123456789",
+			appId: "1:123456789:web:abcdef123456789"
+		};
+		
+		// 初始化Firebase
+		const app = initializeApp(firebaseConfig);
+		const db = getFirestore(app);
+		
+		// 导出到全局
+		window.firebaseApp = app;
+		window.firebaseDb = db;
+	</script>
+	<script src='js/Character.js' type='text/javascript'></script>
+	<script src='js/GameSelection.js' type='text/javascript'></script>
+	<script src='js/SkillSystem.js?v=2' type='text/javascript'></script>
 	<script src='js/Player.js' type='text/javascript'></script>
 	<script src='js/Board.js' type='text/javascript'></script>
-	<script src='js/Game.js' type='text/javascript'></script>
+	<script src='js/Game.js?v=2' type='text/javascript'></script>
 	<script src='js/layout.js' type='text/javascript'></script>
 	<script src='js/interface.js' type='text/javascript'></script>
 	<script src='js/storage.js' type='text/javascript'></script>
+	<script src='js/skills.js' type='text/javascript'></script>
 </head>
 <body ontouchstart="">
 <div class='fullscreen-wrapper' id='happy-outer'>
@@ -38,12 +67,56 @@
 <div data-role='page' data-theme='w' id='game-page' class='no-background'>
 	<div data-role='content' class='center no-padding'>
 		<div id='game-region'>
+			<!-- 回合信息 -->
+			<div id='round-info' class='round-info'>
+				<div class='round-counter'>第 <span id='current-round'>1</span> 轮 / 10</div>
+				<div class='timer' id='timer'>6</div>
+			</div>
+			
+			<!-- 玩家信息 -->
+			<div id='players-info' class='players-info'>
+				<div class='player-info' id='player1-info'>
+					<div class='player-name' id='player1-name'>张技能五 ⚔️</div>
+					<div class='player-hp' id='player1-hp'>♥️♥️♥️♥️♥️</div>
+				</div>
+				<div class='vs'>VS</div>
+				<div class='player-info' id='player2-info'>
+					<div class='player-name' id='player2-name'>子棋 🎯</div>
+					<div class='player-hp' id='player2-hp'>♥️♥️♥️♥️♥️♥️</div>
+				</div>
+			</div>
+			
+			<div id='game-info' class='game-info'>
+				<div class='go black'></div>
+				<div class='cont'>黑子的回合</div>
+			</div>
+			
 			<div id='main-but-group' class='game-ult'>
-				<a href='#new-game' class='button'>Restart</a>
-				<a href='#' id='undo-button' class='button'>Undo</a>
+				<a href='#new-game' class='button'>重新开始</a>
+				<a href='#' id='undo-button' class='button'>悔棋</a>
 			</div>
 			<div id='other-but-group' class='game-ult'>
-				<a href='#help-page' id='help-button' class='button'>About</a>
+				<a href='#help-page' id='help-button' class='button'>关于</a>
+			</div>
+			
+			<!-- 行动选择 -->
+			<div id='action-panel' class='action-panel'>
+				<div class='action-title'>选择行动</div>
+				<div class='action-buttons'>
+					<button class='action-btn' id='place-stone-btn'>下棋</button>
+					<button class='action-btn' id='use-skill-btn'>发动技能</button>
+				</div>
+			</div>
+			
+			<!-- 技能面板 -->
+			<div id='skills-panel' class='skills-panel' style='display: none;'>
+				<div class='skill-title'>选择技能</div>
+				<div class='skill-buttons' id='skill-buttons'>
+					<!-- 技能按钮将动态生成 -->
+				</div>
+				<div class='skill-info'>
+					<span id='skill-description'>选择一个技能使用</span>
+				</div>
 			</div>
 			<div class='go-board' data-enhance=false>
 				
@@ -58,70 +131,188 @@
 </div>
 <div id='game-won' data-theme='a' data-role='dialog'>
 	<div data-role='header'>
-		<h4>You Win!</h4>
+		<h4>你赢了！</h4>
 	</div>
 	<div data-role='content'>
 		<div id='win-content'>
-			You have won the game! Play again?
+			恭喜你赢得了游戏！再来一局吗？
 		</div>
 		<fieldset class="ui-grid-a">
-			<div class="ui-block-a"><button class='back-to-game'  data-theme='c'>Back</button></div>
+			<div class="ui-block-a"><button class='back-to-game'  data-theme='c'>返回</button></div>
 			<div class="ui-block-b">
 				<a href='#new-game' data-rel='dialog' data-role='button'>
-					New Game
+					新游戏
 				</a>
 			</div>	   
 		</fieldset>
 	</div>
 </div>
-<div id='new-game' data-theme='a' data-role='dialog' class='long-dialog'>
+<!-- 对战模式选择页面 -->
+<div id='mode-selection' data-theme='a' data-role='dialog'>
 	<div data-role='header'>
-		<h4>Gomoku</h4>
+		<h4>选择对战模式</h4>
 	</div>
 	<div data-role='content'>
-		<fieldset data-role="controlgroup"  data-theme='a' id='mode-select'>
-			<legend>Opponent</legend>
-				<input type="radio" name="radio-choice-1" id="radio-choice-1" value="vshuman"/>
-				<label for="radio-choice-1">Buddy</label>
+		<div class='selection-container'>
+			<div class='mode-option' data-mode='single'>
+				<div class='mode-icon'>👤</div>
+				<h3>单人模式</h3>
+				<p>与AI对战，选择你的角色</p>
+			</div>
+			<div class='mode-option' data-mode='multi'>
+				<div class='mode-icon'>👥</div>
+				<h3>双人模式</h3>
+				<p>与朋友对战，双方选择角色</p>
+			</div>
+		</div>
+		<div class='button-container'>
+			<button class='back-to-game' data-theme='c'>返回</button>
+		</div>
+	</div>
+</div>
 
-				<input type="radio" name="radio-choice-1" id="radio-choice-2" value="vscomputer"  />
-				<label for="radio-choice-2">AI</label>
-		</fieldset> 
-		
-		<fieldset data-role="controlgroup" data-theme='a' id='color-select' class='vs-computer'>
-			<legend>Color</legend>
-				<input type="radio" name="radio-choice-1" id="radio-choice-2" value="black" data-theme='a'  />
-				<label for="radio-choice-2">Dark Side of the Moon Black</label>
-				
-				<input type="radio" name="radio-choice-1" id="radio-choice-1" value="white" data-theme='a' />
-				<label for="radio-choice-1">Snow White</label>
-		</fieldset>
-		
-		<fieldset data-role="controlgroup"  data-theme='a' id='level-select'  class='vs-computer'>
-			<legend>Difficulty</legend>
-			
-				<input type="radio" name="radio-choice-1" id="radio-choice-1" value="novice" />
-				<label for="radio-choice-1">Noob</label>
+<!-- 角色选择页面 -->
+<div id='character-selection' data-theme='a' data-role='dialog'>
+	<div data-role='header'>
+		<h4 id='character-selection-title'>选择角色</h4>
+	</div>
+	<div data-role='content'>
+		<div class='character-grid'>
+			<div class='character-option' data-character='zhang'>
+				<img src='images/张技能五.jpg' alt='张技能五' class='character-avatar' />
+				<h3>张技能五</h3>
+				<div class='character-hp'>❤️❤️❤️❤️❤️</div>
+				<p class='character-desc'>技能大师，拥有最全面的技能组合</p>
+			</div>
+			<div class='character-option' data-character='ziqi'>
+				<img src='images/子棋.jpg' alt='子棋' class='character-avatar' />
+				<h3>子棋</h3>
+				<div class='character-hp'>❤️❤️❤️❤️❤️❤️</div>
+				<p class='character-desc'>平衡型角色，生命值较高</p>
+			</div>
+			<div class='character-option' data-character='taizi'>
+				<img src='images/太子.jpg' alt='太子' class='character-avatar' />
+				<h3>太子</h3>
+				<div class='character-hp'>❤️❤️❤️</div>
+				<p class='character-desc'>高技能角色，但生命值较低</p>
+			</div>
+			<div class='character-option' data-character='wang'>
+				<img src='images/王教练.jpg' alt='王教练' class='character-avatar' />
+				<h3>王教练</h3>
+				<div class='character-hp'>❤️</div>
+				<p class='character-desc'>极端角色，只有1点生命值但拥有最强技能</p>
+			</div>
+		</div>
+		<div class='button-container'>
+			<button class='back-to-mode' data-theme='c'>返回</button>
+			<button id='confirm-character' data-theme='b' disabled>确认选择</button>
+		</div>
+	</div>
+</div>
 
-				<input type="radio" name="radio-choice-1" id="radio-choice-2" value="medium"  />
-				<label for="radio-choice-2">Regular</label>
+<!-- 棋子先后选择页面 -->
+<div id='color-selection' data-theme='a' data-role='dialog'>
+	<div data-role='header'>
+		<h4>选择棋子先后</h4>
+	</div>
+	<div data-role='content'>
+		<div class='color-options'>
+			<div class='color-option' data-color='black'>
+				<div class='color-icon black-piece'></div>
+				<h3>黑子先行</h3>
+				<p>先手优势，可以控制开局节奏</p>
+			</div>
+			<div class='color-option' data-color='white'>
+				<div class='color-icon white-piece'></div>
+				<h3>白子后行</h3>
+				<p>后手应对，可以观察对手策略</p>
+			</div>
+		</div>
+		<div class='button-container'>
+			<button class='back-to-character' data-theme='c'>返回</button>
+			<button id='confirm-color' data-theme='b' disabled>确认选择</button>
+		</div>
+	</div>
+</div>
 
-				<input type="radio" name="radio-choice-1" id="radio-choice-3" value="expert"  />
-				<label for="radio-choice-3">Pro</label>
-				
-		</fieldset>
-		<fieldset class="ui-grid-a">
-			<div class="ui-block-a"><button class='back-to-game'  data-theme='c'>Back</button></div>
-			<div class="ui-block-b"><button id='start-game'  data-theme='b'>Start</button></div>	   
-		</fieldset>
+<!-- 难度选择页面 -->
+<div id='difficulty-selection' data-theme='a' data-role='dialog'>
+	<div data-role='header'>
+		<h4>选择难度</h4>
+	</div>
+	<div data-role='content'>
+		<div class='difficulty-options'>
+			<div class='difficulty-option' data-difficulty='easy'>
+				<div class='difficulty-icon'>😊</div>
+				<h3>简单</h3>
+				<p>适合新手，AI思考时间较短</p>
+			</div>
+			<div class='difficulty-option' data-difficulty='medium'>
+				<div class='difficulty-icon'>😐</div>
+				<h3>中等</h3>
+				<p>平衡难度，AI有中等策略</p>
+			</div>
+			<div class='difficulty-option' data-difficulty='hard'>
+				<div class='difficulty-icon'>😈</div>
+				<h3>困难</h3>
+				<p>高难度，AI具有高级策略</p>
+			</div>
+		</div>
+		<div class='button-container'>
+			<button class='back-to-color' data-theme='c'>返回</button>
+			<button id='confirm-difficulty' data-theme='b' disabled>确认选择</button>
+		</div>
+	</div>
+</div>
+
+<!-- 游戏确认页面 -->
+<div id='game-confirm' data-theme='a' data-role='dialog'>
+	<div data-role='header'>
+		<h4>确认游戏设置</h4>
+	</div>
+	<div data-role='content'>
+		<div class='game-summary'>
+			<div class='summary-item'>
+				<strong>对战模式：</strong>
+				<span id='summary-mode'></span>
+			</div>
+			<div class='summary-item'>
+				<strong>玩家1：</strong>
+				<span id='summary-player1'></span>
+			</div>
+			<div class='summary-item' id='summary-player2-container' style='display:none;'>
+				<strong>玩家2：</strong>
+				<span id='summary-player2'></span>
+			</div>
+			<div class='summary-item'>
+				<strong>棋子颜色：</strong>
+				<span id='summary-color'></span>
+			</div>
+			<div class='summary-item' id='summary-difficulty-container' style='display:none;'>
+				<strong>难度：</strong>
+				<span id='summary-difficulty'></span>
+			</div>
+		</div>
+		<div class='button-container'>
+			<button class='back-to-difficulty' data-theme='c'>返回</button>
+			<button id='start-game' data-theme='b'>开始游戏</button>
+		</div>
 	</div>
 </div>
 <div data-role='dialog' data-theme='a' id='help-page'>
 	<div data-role='header'>
-		<h4>About</h4>
+		<h4>关于游戏</h4>
 	</div>
 	<div data-role='content' class='thin-content'>
-		<p>This game was developed by <a href='https://nvios.github.io/luca_bontempi/' target="_blank">Luca Bontempi</a>. Check out other projects on <a href='https://github.com/Nvios' target="_blank">Github</a>!</p>
+		<p>技能五子棋是一款创新的策略对战游戏，在传统五子棋基础上加入了独特的技能系统，让游戏更加有趣和具有挑战性。</p>
+		<p>游戏特色：</p>
+		<ul>
+			<li>🎯 多种技能：每个玩家都有独特的技能可以使用</li>
+			<li>⚔️ 策略对战：需要合理运用技能来获得优势</li>
+			<li>🤖 智能AI：不同难度级别的AI对手</li>
+			<li>👥 双人对战：支持本地双人对战模式</li>
+		</ul>
+		<p>原版游戏由 <a href='https://nvios.github.io/luca_bontempi/' target="_blank">Luca Bontempi</a> 开发，技能系统由我们团队改进。</p>
 	</div>
 </div>
 </body>
