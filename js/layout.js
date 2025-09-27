@@ -47,6 +47,7 @@ function adjustSizeGen() {
             gameHeader.css('line-height', 80 + 'px');
             gameInfo.css({
                 'top': 20,
+                'right': 20,
                 'width': ((2 * hsize + 1) * 15 + 12) / 2 - 150
             });
             mainButs.css({
@@ -78,7 +79,7 @@ function adjustSizeGen() {
             });
             gameHeader.css('line-height', 30 + hsize + 'px');
             gameInfo.css({
-                'left': 15,
+                'right': 20,
                 'top': 36 + hsize,
                 'width': 160 + 6 - 45 - hsize / 2
             });

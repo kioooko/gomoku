@@ -52,7 +52,7 @@
 	<script src='js/Player.js' type='text/javascript'></script>
 	<script src='js/Board.js' type='text/javascript'></script>
 	<script src='js/Game.js?v=2' type='text/javascript'></script>
-	<script src='js/layout.js' type='text/javascript'></script>
+	<script src='js/layout.js?v=2' type='text/javascript'></script>
 	<script src='js/interface.js' type='text/javascript'></script>
 	<script src='js/storage.js' type='text/javascript'></script>
 	<script src='js/skills.js' type='text/javascript'></script>
@@ -67,44 +67,46 @@
 <div data-role='page' data-theme='w' id='game-page' class='no-background'>
 	<div data-role='content' class='center no-padding'>
 		<div id='game-region'>
-			<!-- 回合信息 -->
-			<div id='round-info' class='round-info'>
-				<div class='round-counter'>第 <span id='current-round'>1</span> 轮 / 10</div>
-				<div class='timer' id='timer'>6</div>
-			</div>
-			
-			<!-- 玩家信息 -->
-			<div id='players-info' class='players-info'>
-				<div class='player-info' id='player1-info'>
-					<div class='player-name' id='player1-name'>张技能五 ⚔️</div>
-					<div class='player-hp' id='player1-hp'>♥️♥️♥️♥️♥️</div>
+			<div id='right-panel'>
+				<!-- 回合信息 -->
+				<div id='round-info' class='round-info'>
+					<div class='round-counter'>第 <span id='current-round'>1</span> 轮 / 10</div>
+					<div class='timer' id='timer'>6</div>
 				</div>
-				<div class='vs'>VS</div>
-				<div class='player-info' id='player2-info'>
-					<div class='player-name' id='player2-name'>子棋 🎯</div>
-					<div class='player-hp' id='player2-hp'>♥️♥️♥️♥️♥️♥️</div>
+				
+				<!-- 玩家信息 -->
+				<div id='players-info' class='players-info'>
+					<div class='player-info' id='player1-info'>
+						<div class='player-name' id='player1-name'>张技能五 ⚔️</div>
+						<div class='player-hp' id='player1-hp'>♥️♥️♥️♥️♥️</div>
+					</div>
+					<div class='vs'>VS</div>
+					<div class='player-info' id='player2-info'>
+						<div class='player-name' id='player2-name'>子棋 🎯</div>
+						<div class='player-hp' id='player2-hp'>♥️♥️♥️♥️♥️♥️</div>
+					</div>
 				</div>
-			</div>
-			
-			<div id='game-info' class='game-info'>
-				<div class='go black'></div>
-				<div class='cont'>黑子的回合</div>
-			</div>
-			
-			<div id='main-but-group' class='game-ult'>
-				<a href='#new-game' class='button'>重新开始</a>
-				<a href='#' id='undo-button' class='button'>悔棋</a>
-			</div>
-			<div id='other-but-group' class='game-ult'>
-				<a href='#help-page' id='help-button' class='button'>关于</a>
-			</div>
-			
-			<!-- 行动选择 -->
-			<div id='action-panel' class='action-panel'>
-				<div class='action-title'>选择行动</div>
-				<div class='action-buttons'>
-					<button class='action-btn' id='place-stone-btn'>下棋</button>
-					<button class='action-btn' id='use-skill-btn'>发动技能</button>
+				
+				<div id='game-info' class='game-info'>
+					<div class='go black'></div>
+					<div class='cont'>黑子的回合</div>
+				</div>
+				
+				<!-- 行动选择 -->
+				<div id='action-panel' class='action-panel'>
+					<div class='action-title'>选择行动</div>
+					<div class='action-buttons'>
+						<button class='action-btn' id='place-stone-btn'>下棋</button>
+						<button class='action-btn' id='use-skill-btn'>发动技能</button>
+					</div>
+				</div>
+				
+				<div id='main-but-group' class='game-ult'>
+					<a href='#new-game' class='button'>重新开始</a>
+					<a href='#' id='undo-button' class='button'>悔棋</a>
+				</div>
+				<div id='other-but-group' class='game-ult'>
+					<a href='#help-page' id='help-button' class='button'>关于</a>
 				</div>
 			</div>
 			
@@ -312,7 +314,7 @@
 			<li>🤖 智能AI：不同难度级别的AI对手</li>
 			<li>👥 双人对战：支持本地双人对战模式</li>
 		</ul>
-		<p>原版游戏由 <a href='https://nvios.github.io/luca_bontempi/' target="_blank">Luca Bontempi</a> 开发，技能系统由我们团队改进。</p>
+		<p>原版五子棋游戏参考开源项目 <a href='https://github.com/nvios/gomoku?tab=readme-ov-file' target="_blank">github.com/nvios/gomoku</a> ，技能系统由KK乔改进，整体游戏玩法及创作初衷来自于喜人奇妙夜2的技能五子棋，致敬🫡 <a href='https://github.com/KK-Jo/Game-Design-and-Implementation' target="_blank">github.com/KK-Jo/Game-Design-and-Implementation</a> 。</p>
 	</div>
 </div>
 </body>

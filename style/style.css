@@ -217,6 +217,36 @@ header.game-ult {
 	font-family: "Poppins", Helvetica, Arial, sans-serif;
 }
 
+/* 右侧面板容器：统一垂直排列，避免重叠 */
+#right-panel {
+	position: absolute;
+	top: 20px;
+	right: 20px;
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+	width: 220px;
+	z-index: 10;
+}
+
+/* 在右侧面板内，项采用普通流布局 */
+#right-panel .round-info,
+#right-panel .players-info,
+#right-panel .game-info,
+#right-panel .action-panel,
+#right-panel #main-but-group,
+#right-panel #other-but-group {
+	position: static;
+	margin: 0;
+}
+
+#main-but-group,
+#other-but-group {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+
 .thinking {
 	top: 45px;
 	margin-left: -132px;
@@ -279,9 +309,11 @@ a {
   border: 2px solid rgba(255, 255, 255, 0.699);
   font-weight: 500;
   text-decoration: none;
-  padding: 6px;
-  margin: 4px 20px;
+  padding: 10px 15px;
+  margin: 0;
   border-radius: 10px;
+  min-width: 120px;
+  transition: all 0.3s ease;
 }
 
 .button:hover {
@@ -290,6 +322,126 @@ a {
   border-color: rgba(255, 255, 255, 0.5);
   background: rgba(255, 255, 255, 0.35);
   transition: 0.4s;
+}
+
+/* UI组件按钮样式 - 模仿参考图片的按钮样式 */
+.round-info, .players-info, .game-info, .action-panel {
+  background: rgba(255, 255, 255, 0.9);
+  border: 2px solid rgba(255, 255, 255, 0.8);
+  border-radius: 15px;
+  padding: 15px;
+  margin: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+  text-align: center;
+  color: #333;
+  font-weight: 500;
+}
+
+/* 回合信息样式 */
+.round-info { min-width: 120px; }
+
+.round-counter {
+  font-size: 16px;
+  margin-bottom: 8px;
+  color: #666;
+}
+
+.timer {
+  font-size: 24px;
+  font-weight: bold;
+  color: #e74c3c;
+}
+
+/* 玩家信息样式 */
+.players-info { min-width: 200px; }
+
+.player-info {
+  display: block;
+  margin: 5px 0;
+  text-align: center;
+}
+
+.player-name {
+  font-size: 14px;
+  font-weight: bold;
+  margin-bottom: 5px;
+  color: #2c3e50;
+}
+
+.player-hp {
+  font-size: 16px;
+}
+
+.vs {
+  font-size: 18px;
+  font-weight: bold;
+  color: #e74c3c;
+  margin: 10px 0;
+  text-align: center;
+}
+
+/* 游戏信息样式 */
+.game-info {
+  min-width: 150px;
+  background: rgba(255, 255, 255, 0.9);
+  border: 2px solid rgba(255, 255, 255, 0.8);
+  border-radius: 15px;
+  padding: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+  text-align: center;
+  color: #333;
+  font-weight: 500;
+}
+
+.game-info .go {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+.game-info .cont {
+  font-size: 16px;
+  font-weight: bold;
+  color: #2c3e50;
+}
+
+/* 行动选择面板样式 */
+.action-panel { min-width: 200px; }
+
+.action-title {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #2c3e50;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.action-btn {
+  flex: 1;
+  padding: 10px 15px;
+  border: 2px solid rgba(52, 152, 219, 0.8);
+  border-radius: 10px;
+  background: rgba(52, 152, 219, 0.1);
+  color: #2c3e50;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.action-btn:hover {
+  background: rgba(52, 152, 219, 0.2);
+  border-color: rgba(52, 152, 219, 1);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(52, 152, 219, 0.3);
 }
 
 table.board,table.board td {
@@ -326,6 +478,12 @@ table.board,table.board td {
 	border-spacing: 0;
 	border-collapse: collapse;
 	color: transparent;
+}
+
+/* 整体左移：保持棋盘几何不变，仅水平平移可点击落子范围与背景网格 */
+.go-board,
+table.board {
+	transform: translateX(-100px);
 }
 
 .go-darkdot::before {
@@ -385,11 +543,7 @@ table.board,table.board td {
 	position: static;
 }
 
-#game-info {
-	text-align: left;
-	text-shadow: none;
-	font-size: 1.1em;
-}
+/* 删除冲突的game-info样式，使用新的.game-info样式 */
 
 .blinking {
 	-webkit-animation: blink 0.7s;
