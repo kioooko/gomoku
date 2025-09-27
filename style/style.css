@@ -197,7 +197,7 @@ body {
 }
 
 .fullscreen-wrapper>.screen-center {
-	position: absolute;
+	position: static;
 }
 
 .fullscreen-wrapper {
@@ -211,16 +211,20 @@ body {
 	z-index: 99;
 }
 
+.fullscreen-wrapper[style*="display: block"] {
+	display: flex !important;
+	align-items: center;
+	justify-content: center;
+}
+
 .happy-face {
-	margin-left: -240px;
-  margin-top: -69px;
+	margin: 0;
 	box-shadow: 0 0 20px 10px #0000003b;
 	border-radius: 10px;
 }
 
 .sad-face {
-	margin-left: -221px;
-	margin-top: -50px;
+	margin: 0;
 	width: 440px;
 	box-shadow: 0 0 20px 10px #0000003b;
 	border-radius: 10px;
