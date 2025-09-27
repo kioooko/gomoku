@@ -209,6 +209,9 @@ var Board = function(boardElm, backgroundElm){
         boardElm.find(".go-place").css("opacity", "");
         this.unHighlight();
         setNum = 0;
+        // 清除被技能设置的阻挡标记
+        boardElm.find('.go-place').removeClass('blocked');
+        boardElm.find('.go-place .go').removeClass('blocked-marker');
         map.forEach(function(color){
             color.forEach(function(direction){
                 direction.forEach(function(row){

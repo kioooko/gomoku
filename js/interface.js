@@ -14,8 +14,33 @@ $(document).ready(function(){
     });
 
     $("#undo-button").on('tap', function(){
+			// 显示临时GIF（飞沙走石按钮 -> 显示 飞沙走石.gif）
+			showTempGif('images/飞沙走石.gif');
         game.undo();
     });
+
+		$("#restart-button").on('tap', function(){
+			// 显示临时GIF（力拔山兮按钮 -> 显示 力拔山兮.gif）
+			showTempGif('images/力拔山兮.gif');
+			if (typeof game.restart === 'function') {
+				game.restart();
+			} else {
+				// 回落到模式选择，保持可用性
+				$.mobile.changePage('#mode-selection');
+			}
+		});
+
+		function showTempGif(src){
+			var $overlay = $('<div class="temp-gif-overlay"></div>');
+			var $img = $('<img class="temp-gif-image" />').attr('src', src);
+			$overlay.append($img);
+			$('body').append($overlay);
+			setTimeout(function(){
+				$overlay.fadeOut(300, function(){
+					$overlay.remove();
+				});
+			}, 2000);
+		}
     
     $('.fullscreen-wrapper').on('tap', function(){
         $(this).hide();

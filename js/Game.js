@@ -103,9 +103,15 @@ function Game(boardElm, boardBackgroundElm){
             white.watch(last.r,last.c,'remove');
             black.watch(last.r,last.c,'remove');
         }while(players[last.color] instanceof AIPlayer);
+        if(history.length === 0){
+            board.unHighlight();
+            if (players['black']) {
+                players['black'].myTurn();
+            }
+            return;
+        }
         var last = history[history.length - 1];
-        if(history.length > 0) board.highlight(last.r, last.c);
-        else board.unHighlight();
+        board.highlight(last.r, last.c);
         players[last.color].other.myTurn();
         for(var col in {'black':'','white':''}){
             if(players[col] instanceof AIPlayer && players[col].computing){
@@ -179,6 +185,39 @@ function Game(boardElm, boardBackgroundElm){
             skillSystem.setCurrentPlayer(players.black);
             skillSystem.startRound();
         } else {
+            players.black.myTurn();
+        }
+    };
+
+    this.restart = function(){
+        // 停止AI计算
+        for(var col in {'black':'','white':''}){
+            if(players[col] instanceof AIPlayer && players[col].computing){
+                players[col].cancel++;
+            }
+        }
+
+        // 重置状态
+        this.rounds = 0;
+        history = [];
+        currentColor = 'black';
+        playing = true;
+        board.init();
+        board.unHighlight();
+
+        // 重置角色生命值
+        if (players.black && players.white) {
+            players.black.character.reset();
+            players.white.character.reset();
+        }
+
+        // 重置技能系统
+        if (skillSystem && typeof skillSystem.reset === 'function') {
+            skillSystem.reset();
+        }
+
+        // 从黑子开始
+        if (players.black) {
             players.black.myTurn();
         }
     };
