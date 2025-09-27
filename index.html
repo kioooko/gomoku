@@ -71,20 +71,14 @@
 				<!-- 回合信息 -->
 				<div id='round-info' class='round-info'>
 					<div class='round-counter'>第 <span id='current-round'>1</span> 轮 / 10</div>
-					<div class='timer' id='timer'>6</div>
+					<!-- <div class='timer' id='timer'>6</div> -->
 				</div>
 				
 				<!-- 玩家信息 -->
 				<div id='players-info' class='players-info'>
-					<div class='player-info' id='player1-info'>
-						<div class='player-name' id='player1-name'>张技能五 ⚔️</div>
-						<div class='player-hp' id='player1-hp'>♥️♥️♥️♥️♥️</div>
-					</div>
+					<img id='player1-avatar' class='player-avatar' src='images/张技能五.jpg' alt='玩家1头像'>
 					<div class='vs'>VS</div>
-					<div class='player-info' id='player2-info'>
-						<div class='player-name' id='player2-name'>子棋 🎯</div>
-						<div class='player-hp' id='player2-hp'>♥️♥️♥️♥️♥️♥️</div>
-					</div>
+					<img id='player2-avatar' class='player-avatar' src='images/子棋.jpg' alt='玩家2头像'>
 				</div>
 				
 				<div id='game-info' class='game-info'>
@@ -92,14 +86,14 @@
 					<div class='cont'>黑子的回合</div>
 				</div>
 				
-				<!-- 行动选择 -->
+				<!--
 				<div id='action-panel' class='action-panel'>
 					<div class='action-title'>选择行动</div>
 					<div class='action-buttons'>
 						<button class='action-btn' id='place-stone-btn'>下棋</button>
 						<button class='action-btn' id='use-skill-btn'>发动技能</button>
 					</div>
-				</div>
+				</div> 行动选择 暂时隐藏-->
 				
 				<div id='main-but-group' class='game-ult'>
 					<a href='#' id='restart-button' class='button'>力拔山兮💪🏻😤</a>
@@ -180,26 +174,26 @@
 	</div>
 	<div data-role='content'>
 		<div class='character-grid'>
-			<div class='character-option' data-character='zhang'>
-				<img src='images/张技能五.jpg' alt='张技能五' class='character-avatar' />
+            <div class='character-option' data-character='zhang'>
+                <img src='images/张技能五.jpg' alt='张技能五' class='character-avatar' loading='lazy' decoding='async' />
 				<h3>张技能五</h3>
 				<div class='character-hp'>❤️❤️❤️❤️❤️</div>
 				<p class='character-desc'>技能大师，拥有最全面的技能组合</p>
 			</div>
 			<div class='character-option' data-character='ziqi'>
-				<img src='images/子棋.jpg' alt='子棋' class='character-avatar' />
+                <img src='images/子棋.jpg' alt='子棋' class='character-avatar' loading='lazy' decoding='async' />
 				<h3>子棋</h3>
 				<div class='character-hp'>❤️❤️❤️❤️❤️❤️</div>
 				<p class='character-desc'>平衡型角色，生命值较高</p>
 			</div>
 			<div class='character-option' data-character='taizi'>
-				<img src='images/太子.jpg' alt='太子' class='character-avatar' />
+                <img src='images/太子.jpg' alt='太子' class='character-avatar' loading='lazy' decoding='async' />
 				<h3>太子</h3>
 				<div class='character-hp'>❤️❤️❤️</div>
 				<p class='character-desc'>高技能角色，但生命值较低</p>
 			</div>
 			<div class='character-option' data-character='wang'>
-				<img src='images/王教练.jpg' alt='王教练' class='character-avatar' />
+                <img src='images/王教练.jpg' alt='王教练' class='character-avatar' loading='lazy' decoding='async' />
 				<h3>王教练</h3>
 				<div class='character-hp'>❤️</div>
 				<p class='character-desc'>极端角色，只有1点生命值但拥有最强技能</p>

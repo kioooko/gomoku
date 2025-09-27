@@ -384,31 +384,27 @@ a {
 }
 
 /* 玩家信息样式 */
-.players-info { min-width: 200px; }
-
-.player-info {
-  display: block;
-  margin: 5px 0;
-  text-align: center;
+.players-info {
+  min-width: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
 }
 
-.player-name {
-  font-size: 14px;
-  font-weight: bold;
-  margin-bottom: 5px;
-  color: #2c3e50;
-}
-
-.player-hp {
-  font-size: 16px;
+.player-avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  border: 2px solid rgba(255,255,255,0.8);
 }
 
 .vs {
-  font-size: 18px;
-  font-weight: bold;
+  font-size: 16px;
+  font-weight: 700;
   color: #e74c3c;
-  margin: 10px 0;
-  text-align: center;
 }
 
 /* 游戏信息样式 */

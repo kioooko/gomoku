@@ -544,20 +544,17 @@ SkillSystem.prototype.updateDisplay = function() {
     // 更新回合显示
     $('#current-round').text(this.round);
     
-    // 更新玩家信息
+    // 更新玩家头像
     try {
-        $('#player1-name').text(this.game.black.character.name + ' ' + this.game.black.character.emoji);
-        $('#player1-hp').text(this.getHpDisplay(this.game.black.character.hp));
-        
-        $('#player2-name').text(this.game.white.character.name + ' ' + this.game.white.character.emoji);
-        $('#player2-hp').text(this.getHpDisplay(this.game.white.character.hp));
+        var p1Src = this.getAvatarSrc(this.game.black.character.name);
+        var p2Src = this.getAvatarSrc(this.game.white.character.name);
+        $('#player1-avatar').attr('src', p1Src).attr('alt', this.game.black.character.name);
+        $('#player2-avatar').attr('src', p2Src).attr('alt', this.game.white.character.name);
     } catch (error) {
-        console.error('更新玩家信息时发生错误:', error);
-        // 使用默认值
-        $('#player1-name').text('玩家1');
-        $('#player1-hp').text('♥️♥️♥️♥️♥️');
-        $('#player2-name').text('玩家2');
-        $('#player2-hp').text('♥️♥️♥️♥️♥️');
+        console.error('更新玩家头像时发生错误:', error);
+        // 使用默认头像回退
+        $('#player1-avatar').attr('src', 'images/子棋.jpg').attr('alt', '玩家1');
+        $('#player2-avatar').attr('src', 'images/张技能五.jpg').attr('alt', '玩家2');
     }
     
     // 更新游戏信息
@@ -577,6 +574,17 @@ SkillSystem.prototype.getHpDisplay = function(hp) {
         hearts += '♥️';
     }
     return hearts;
+};
+
+// 根据角色名返回头像图片路径
+SkillSystem.prototype.getAvatarSrc = function(name) {
+    var map = {
+        '张技能五': 'images/张技能五.jpg',
+        '子棋': 'images/子棋.jpg',
+        '太子': 'images/太子.jpg',
+        '王教练': 'images/王教练.jpg'
+    };
+    return map[name] || 'images/子棋.jpg';
 };
 
 // 导出到全局

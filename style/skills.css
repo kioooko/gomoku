@@ -223,6 +223,13 @@
 }
 
 /* 选择页面样式 */
+/* 头像尺寸与样式变量 */
+:root {
+    --avatar-size: clamp(64px, 8.5vw, 100px);
+    --avatar-border: 3px;
+    --avatar-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    --avatar-shadow-strong: 0 6px 24px rgba(0, 0, 0, 0.25);
+}
 .selection-container {
 	display: flex;
 	flex-direction: column;
@@ -309,13 +316,27 @@
 }
 
 .character-avatar {
-	width: 200px;
-	height: 200px;
-	border-radius: 50%;
-	object-fit: cover;
-	margin-bottom: 10px;
-	border: 3px solid #fff;
-	box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    width: var(--avatar-size);
+    height: var(--avatar-size);
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 10px;
+    border: var(--avatar-border) solid #fff;
+    box-shadow: var(--avatar-shadow);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease, filter 0.2s ease;
+    will-change: transform;
+}
+
+.character-option:hover .character-avatar {
+    transform: translateY(-1px) scale(1.06);
+    box-shadow: var(--avatar-shadow-strong);
+    filter: saturate(1.05) contrast(1.05);
+}
+
+.character-option.selected .character-avatar {
+    transform: scale(1.08);
+    border-color: #667eea;
+    box-shadow: var(--avatar-shadow-strong);
 }
 
 .character-option h3 {
@@ -502,28 +523,19 @@
 
 /* 响应式设计 */
 @media (max-width: 1200px) {
-	.character-avatar {
-		width: 100px;
-		height: 100px;
-	}
+    :root { --avatar-size: 96px; }
 }
 
 @media (max-width: 800px) {
-	.character-avatar {
-		width: 100px;
-		height: 100px;
-	}
+    :root { --avatar-size: 80px; }
 }
 
 @media (max-width: 480px) {
 	.character-grid {
 		grid-template-columns: 1fr;
 	}
-	
-	.character-avatar {
-		width: 44px;
-		height: 44px;
-	}
+    
+    :root { --avatar-size: 56px; }
 	
 	.color-options {
 		flex-direction: column;
