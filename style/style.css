@@ -478,12 +478,18 @@ table.board,table.board td {
 	border-spacing: 0;
 	border-collapse: collapse;
 	color: transparent;
+	z-index: 2;
 }
 
 /* 整体左移：保持棋盘几何不变，仅水平平移可点击落子范围与背景网格 */
 .go-board,
 table.board {
-	transform: translateX(-100px);
+	transform: translateX(-80px);
+}
+
+/* 背景网格不拦截鼠标事件，点击交给 .go-board/.go-place */
+table.board {
+	pointer-events: none;
 }
 
 .go-darkdot::before {
