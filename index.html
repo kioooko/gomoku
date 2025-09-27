@@ -58,6 +58,8 @@
 	<script src='js/skills.js' type='text/javascript'></script>
 </head>
 <body ontouchstart="">
+<audio id='bgm' src='images/music/技能五子棋.mp3' preload='auto' loop></audio>
+<button id='bgm-toggle' aria-label='切换背景音乐' title='音乐' style='display:none;'>🔊</button>
 <div class='fullscreen-wrapper' id='happy-outer'>
 	<img src='images/happy.gif' class='happy-face screen-center'>
 </div>
@@ -312,4 +314,39 @@
 	</div>
 </div>
 </body>
+</html>
+<script>
+(function(){
+    var audio = document.getElementById('bgm');
+    var toggle = document.getElementById('bgm-toggle');
+    if(!audio || !toggle) return;
+    audio.volume = 0.3;
+    audio.loop = true;
+    var tryPlay = function(){
+        audio.play().then(function(){
+            toggle.textContent = '🔊';
+        }).catch(function(){
+            toggle.style.display = 'block';
+            toggle.textContent = '🔇';
+        });
+    };
+    tryPlay();
+    var resume = function(){
+        tryPlay();
+        document.removeEventListener('click', resume);
+        document.removeEventListener('touchstart', resume);
+    };
+    document.addEventListener('click', resume, { once: true });
+    document.addEventListener('touchstart', resume, { once: true });
+    toggle.addEventListener('click', function(e){
+        e.preventDefault();
+        if(audio.paused){
+            audio.play().then(function(){ toggle.textContent = '🔊'; });
+        }else{
+            audio.pause();
+            toggle.textContent = '🔇';
+        }
+    });
+})();
+</script>
 </html>

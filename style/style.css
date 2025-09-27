@@ -783,3 +783,27 @@ body, body * {
 .go-board, .go-board *, table.board, table.board * {
 	color: transparent !important;
 }
+
+/* 背景音乐控制按钮 */
+#bgm-toggle {
+	position: fixed;
+	right: 16px;
+	bottom: 16px;
+	z-index: 9999;
+	width: 44px;
+	height: 44px;
+	border-radius: 50%;
+	border: none;
+	background: rgba(255,255,255,0.8);
+	box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+	font-size: 20px;
+	line-height: 44px;
+	text-align: center;
+	cursor: pointer;
+	transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+#bgm-toggle:hover {
+	transform: translateY(-1px) scale(1.03);
+	box-shadow: 0 6px 18px rgba(0,0,0,0.2);
+}
