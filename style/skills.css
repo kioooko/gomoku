@@ -5,10 +5,10 @@
 	text-align: center;
 	margin: 10px 0;
 	padding: 15px;
-	background: linear-gradient(45deg, #667eea, #764ba2);
-	color: white;
+	background: rgba(255, 255, 255, 0.5);
+	color: #333;
 	border-radius: 15px;
-	box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .round-counter {
@@ -31,7 +31,7 @@
 	align-items: center;
 	margin: 15px 0;
 	padding: 15px;
-	background: rgba(255, 255, 255, 0.1);
+	background: rgba(255, 255, 255, 0.5);
 	border-radius: 15px;
 	backdrop-filter: blur(10px);
 }
@@ -64,7 +64,7 @@
 .action-panel {
 	margin: 15px 0;
 	padding: 15px;
-	background: rgba(255, 255, 255, 0.1);
+	background: rgba(255, 255, 255, 0.5);
 	border-radius: 15px;
 	backdrop-filter: blur(10px);
 	text-align: center;
@@ -110,7 +110,7 @@
 	text-align: center;
 	margin: 10px 0;
 	padding: 10px;
-	background: rgba(255, 255, 255, 0.1);
+	background: rgba(255, 255, 255, 0.5);
 	border-radius: 10px;
 	backdrop-filter: blur(10px);
 }
@@ -135,7 +135,7 @@
 .skills-panel {
 	margin: 10px 0;
 	padding: 15px;
-	background: rgba(255, 255, 255, 0.1);
+	background: rgba(255, 255, 255, 0.5);
 	border-radius: 10px;
 	backdrop-filter: blur(10px);
 	text-align: center;
@@ -197,7 +197,7 @@
 
 .skill-info span {
 	padding: 5px 10px;
-	background: rgba(255, 255, 255, 0.2);
+	background: rgba(255, 255, 255, 0.5);
 	border-radius: 15px;
 }
 
@@ -234,7 +234,7 @@
 	display: flex;
 	align-items: center;
 	padding: 20px;
-	background: white;
+	background: rgba(255, 255, 255, 0.5);
 	border-radius: 15px;
 	cursor: pointer;
 	transition: all 0.3s ease;
@@ -255,7 +255,10 @@
 }
 
 .mode-icon {
-	font-size: 48px;
+	width: 64px;
+	height: 64px;
+	border-radius: 50%;
+	object-fit: cover;
 	margin-right: 20px;
 }
 
@@ -282,7 +285,7 @@
 .character-option {
 	text-align: center;
 	padding: 20px;
-	background: white;
+	background: rgba(255, 255, 255, 0.5);
 	border-radius: 15px;
 	cursor: pointer;
 	transition: all 0.3s ease;
@@ -345,7 +348,7 @@
 	flex: 1;
 	text-align: center;
 	padding: 20px;
-	background: white;
+	background: rgba(255, 255, 255, 0.5);
 	border-radius: 15px;
 	cursor: pointer;
 	transition: all 0.3s ease;
@@ -383,7 +386,7 @@
 }
 
 .white-piece {
-	background: #fff;
+	background: rgba(255, 255, 255, 0.5);
 	color: #333;
 	border: 2px solid #333;
 }
@@ -411,7 +414,7 @@
 	flex: 1;
 	text-align: center;
 	padding: 20px;
-	background: white;
+	background: rgba(255, 255, 255, 0.5);
 	border-radius: 15px;
 	cursor: pointer;
 	transition: all 0.3s ease;
